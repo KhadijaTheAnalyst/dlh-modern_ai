@@ -4,7 +4,8 @@ Module for visualizing distributions of continuous numerical
 features using histograms with KDE and boxplots.
 """
 import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np
+from scipy import stats
 
 
 def plot_continuous_distributions(df, columns_to_plot=None):
@@ -32,16 +33,20 @@ def plot_continuous_distributions(df, columns_to_plot=None):
         axes = axes.reshape(1, -1)
 
     for i, column in enumerate(columns_to_plot):
-        row = i
-        hist_ax = axes[row, 0]
-        box_ax = axes[row, 1]
+        data = df[column].dropna()
+        hist_ax = axes[i, 0]
+        box_ax = axes[i, 1]
+
         hist_ax.hist(
-            df[column], bins=30, density=True,
+            data, bins=30, density=True,
             alpha=0.7, edgecolor='black'
         )
-        sns.kdeplot(df[column], ax=hist_ax, color='red')
+        kde = stats.gaussian_kde(data)
+        x_values = np.linspace(data.min(), data.max(), 200)
+        hist_ax.plot(x_values, kde(x_values), color='red')
         hist_ax.set_title(f'{column} Histogram + KDE')
-        box_ax.boxplot(df[column], vert=False)
+
+        box_ax.boxplot(data, vert=False)
         box_ax.set_title(f'{column} Boxplot')
 
     plt.tight_layout()
