@@ -29,6 +29,6 @@ def chi_square_tests(df):
         chi2, p, dof, expected = stats.chi2_contingency(
             contingency_table
         )
-        result[column] = float(p)
+        result[column] = p
 
     return result
