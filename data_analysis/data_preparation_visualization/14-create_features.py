@@ -20,10 +20,11 @@ def create_features(df):
         pd.DataFrame: The modified DataFrame with new features
             and original source columns removed.
     """
-    service_cols = ['MultipleLines', 'OnlineSecurity', 'OnlineBackup',
+    service_cols = ['MultipleLines', 'OnlineSecurity','OnlineBackup',
                      'DeviceProtection', 'TechSupport', 'StreamingTV',
                      'StreamingMovies']
-    mapped_services = df[service_cols].map(lambda x: 1 if x == 'Yes' else 0)
+    mapped_services = df[service_cols].map(
+        lambda x: 1 if x == 'Yes' else 0)
     internet_mapped = df['InternetService'].map(
         {'DSL': 1, 'Fiber optic': 1, 'No': 0}
     )
