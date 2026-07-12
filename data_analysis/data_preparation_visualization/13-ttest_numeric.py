@@ -27,6 +27,6 @@ def ttest_numeric(df):
         churned = df[df['Churn'] == 'Yes'][column]
         not_churned = df[df['Churn'] == 'No'][column]
         t_stat, p = stats.ttest_ind(not_churned, churned, equal_var=False)
-        result[column] = float(p)
+        result[column] = p
 
     return result
