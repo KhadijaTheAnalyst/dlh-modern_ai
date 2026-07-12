@@ -36,6 +36,11 @@ def plot_categorical_distributions(df, columns_to_plot=None):
         ax.set_title(column)
         ax.tick_params(axis='x', rotation=45)
 
+    for i in range(len(columns_to_plot), n_rows * n_cols):
+        row = i // n_cols
+        col = i % n_cols
+        axes[row][col].axis('off')
+
     plt.tight_layout()
     plt.savefig("Task_7.png")
     plt.show()
