@@ -22,6 +22,7 @@ def clean_total_charges(df, method='drop'):
     Returns:
         pd.DataFrame: The modified DataFrame.
     """
+    df = df.copy()
     if method == 'drop':
         df = df.dropna(subset=['TotalCharges'])
     elif method == 'median':
