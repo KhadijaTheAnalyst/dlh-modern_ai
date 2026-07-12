@@ -21,8 +21,8 @@ def create_features(df):
             and original source columns removed.
     """
     service_cols = ['MultipleLines', 'OnlineSecurity', 'OnlineBackup',
-                     'DeviceProtection', 'TechSupport', 'StreamingTV',
-                     'StreamingMovies']
+                    'DeviceProtection', 'TechSupport', 'StreamingTV',
+                    'StreamingMovies']
     mapped_services = df[service_cols].map(
         lambda x: 1 if x == 'Yes' else 0)
     internet_mapped = df['InternetService'].map(
