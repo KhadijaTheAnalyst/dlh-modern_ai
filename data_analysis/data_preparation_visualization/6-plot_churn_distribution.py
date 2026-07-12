@@ -17,10 +17,9 @@ def plot_churn_distribution(df):
     Returns:
         None
     """
-    x = df['Churn'].value_counts()
-    color_mapping = {'No': 'skyblue', 'Yes': 'salmon'}
-    colors = [color_mapping[val] for val in x.index]
-    x.plot(kind='bar', color=colors)
-    plt.ylabel('Count')
+    plt.figure(figsize=(12, 8))
+    counts = df['Churn'].value_counts().reindex(['No', 'Yes'])
+    plt.bar(counts.index, counts.values, color=['skyblue', 'salmon'])
     plt.title('Churn Distribution')
+    plt.ylabel('Count')
     plt.show()
