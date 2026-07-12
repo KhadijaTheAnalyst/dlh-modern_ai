@@ -22,4 +22,5 @@ def plot_churn_distribution(df):
     colors = [color_mapping[val] for val in x.index]
     x.plot(kind='bar', color=colors)
     plt.ylabel('Count')
+    plt.title('Churn Distribution')
     plt.show()
