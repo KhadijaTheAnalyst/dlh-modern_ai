@@ -27,6 +27,5 @@ def plot_categorical_vs_churn(df, col):
 
     plt.title(f'Churn Rate by {col}')
     plt.ylabel('Churn Rate')
-    plt.xlabel(col)
     plt.xticks(rotation=45)
     plt.show()
