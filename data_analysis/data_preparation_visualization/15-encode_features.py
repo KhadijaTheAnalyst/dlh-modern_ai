@@ -29,7 +29,7 @@ def encode_features(df):
     le = preprocessing.LabelEncoder()
     df['Churn'] = le.fit_transform(df['Churn'])
 
-    oe = preprocessing.OrdinalEncoder(categories=[['No', 'Yes']] * 4)
+    oe = preprocessing.OrdinalEncoder(categories=[['No', 'Yes']])
     binary_cols = ['Partner', 'Dependents', 'PaperlessBilling',
                    'SeniorCitizen']
     encoded_binary = oe.fit_transform(df[binary_cols])
