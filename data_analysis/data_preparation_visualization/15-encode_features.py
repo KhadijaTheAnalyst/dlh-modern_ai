@@ -29,12 +29,12 @@ def encode_features(df):
     le = preprocessing.LabelEncoder()
     df['Churn'] = le.fit_transform(df['Churn'])
 
-    oe = preprocessing.OrdinalEncoder(categories=[['No', 'Yes']])
     binary_cols = ['Partner', 'Dependents', 'PaperlessBilling',
                    'SeniorCitizen']
-    encoded_binary = oe.fit_transform(df[binary_cols])
-    df[binary_cols] = encoded_binary
-    df[binary_cols] = df[binary_cols].astype(int)
+    oe = preprocessing.OrdinalEncoder(categories=[['No', 'Yes']])
+    for column in binary_cols:
+        df[[column]] = oe.fit_transform(df[[column]])
+        df[column] = df[column].astype(int)
 
     df = pd.get_dummies(df, columns=['Contract', 'PaymentMethod'],
                          drop_first=True, dtype=int)
