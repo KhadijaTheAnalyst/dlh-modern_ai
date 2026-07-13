@@ -37,7 +37,7 @@ def encode_features(df):
         df[column] = df[column].astype(int)
 
     df = pd.get_dummies(df, columns=['Contract', 'PaymentMethod'],
-                         drop_first=True, dtype=int)
+                        drop_first=True, dtype=int)
 
     oe_tenure = preprocessing.OrdinalEncoder()
     df['TenureGroup'] = oe_tenure.fit_transform(df[['TenureGroup']])
