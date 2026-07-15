@@ -2,7 +2,6 @@
 """Scrape a single product's detail page using Selenium (headless Chrome)."""
 import time
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 
 
 def scrape_product_detail(url, delay=2.0):
@@ -41,15 +40,19 @@ def scrape_product_detail(url, delay=2.0):
         # Both the price AND the title sit in separate <h4> tags inside
         # .caption, in that order - price first, title second - so we
         # grab BOTH <h4> elements as a list and pick them out by position.
+        # We use the raw locator string "css selector" instead of
+        # importing selenium's By class, since By.CSS_SELECTOR is just
+        # that same string under the hood - this keeps us within the
+        # "only import time and webdriver" constraint.
         caption_headings = driver.find_elements(
-            By.CSS_SELECTOR, ".caption h4"
+            "css selector", ".caption h4"
         )
         price = caption_headings[0].text
         # index 1 = the second <h4> = the one holding the title
         title = caption_headings[1].text
 
         description = driver.find_element(
-            By.CSS_SELECTOR, ".description"
+            "css selector", ".description"
         ).text
 
         # The star rating on this site's detail page isn't a number
@@ -65,7 +68,7 @@ def scrape_product_detail(url, delay=2.0):
         # So the rating is simply a COUNT of how many filled-star elements
         # exist, not a value we read off a single element.
         star_elements = driver.find_elements(
-            By.CSS_SELECTOR, ".ratings p.ws-icon.ws-icon-star"
+            "css selector", ".ratings p.ws-icon.ws-icon-star"
         )
         rating = len(star_elements)
 
