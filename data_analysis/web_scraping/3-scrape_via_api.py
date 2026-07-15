@@ -4,6 +4,17 @@ paging through until the last page is reached."""
 import json
 fetch_html = __import__('0-fetch_html').fetch_html
 
+# A browser-like User-Agent. Requests sent without one (the default for
+# python-requests) can get rate-limited or refused by the server partway
+# through a run of several rapid consecutive requests.
+_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/115.0.0.0 Safari/537.36"
+    )
+}
+
 
 def scrape_via_api(base_url):
     """Fetch every quote from the site's JSON API endpoints.
@@ -29,7 +40,7 @@ def scrape_via_api(base_url):
         # still works fine here - it just does a GET request and returns
         # the raw response body as a string. We just have to parse that
         # string as JSON ourselves.
-        raw_response = fetch_html(url)
+        raw_response = fetch_html(url, headers=_HEADERS)
 
         # json.loads() turns the JSON text into native Python data:
         # objects -> dict, arrays -> list, strings/numbers stay the same.
