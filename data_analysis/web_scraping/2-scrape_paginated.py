@@ -26,19 +26,35 @@ def scrape_paginated(base_url):
     current_url = base_url
 
     while current_url is not None:
-        # Step 1: scrape the quotes on this page. scrape_basic() does its
-        # own fetch_html() call internally and returns a list of dicts -
-        # exactly like Task 1, just for whichever page we're on right now.
-        page_quotes = scrape_basic(current_url)
-        all_quotes.extend(page_quotes)
-
-        # Step 2: fetch the raw HTML again ourselves (separately from
-        # scrape_basic) so we can look for the "Next" link in it.
+        # Fetch this page's HTML ONCE and reuse it both for scraping the
+        # quotes and for checking pagination. Fetching twice (once via
+        # scrape_basic, once via fetch_html) would double the number of
+        # requests made - which is wasteful, and can trip up servers
+        # (including test/checker servers) that cap how many connections
+        # they'll accept.
         html = fetch_html(current_url)
         soup = BeautifulSoup(html, "html.parser")
 
+        # Same extraction logic as Task 1's scrape_basic(), applied
+        # directly to the soup we already have instead of calling
+        # scrape_basic() (which would re-fetch the page itself).
+        for quote_div in soup.find_all("div", class_="quote"):
+            text = quote_div.find("span", class_="text").get_text()
+            author = quote_div.find("small", class_="author").get_text()
+            tag_links = quote_div.find("div", class_="tags").find_all(
+                "a", class_="tag"
+            )
+            tags = [tag.get_text() for tag in tag_links]
+
+            all_quotes.append({
+                "text": text,
+                "author": author,
+                "tags": tags,
+            })
+
         # On quotes.toscrape.com, the pagination control looks like:
-        #   <li class="next"><a href="/page/2/">Next <span>&rarr;</span></a></li>
+        #   <li class="next"><a href="/page/2/
+        # ">Next <span>&rarr;</span></a></li>
         # On the LAST page, this <li class="next"> simply doesn't exist.
         next_li = soup.find("li", class_="next")
 
