@@ -50,7 +50,8 @@ def scrape_via_api(base_url):
         # {
         #   "has_next": true/false,
         #   "page": <int>,
-        #   "quotes": [ {"text": ..., "author": {"name": ...}, "tags": [...]}, ... ]
+        #   "quotes": [ {"text": ..., "author": {"name": ...},
+        #   "tags": [...]}, ... ]
         # }
         for quote in data["quotes"]:
             all_quotes.append({
