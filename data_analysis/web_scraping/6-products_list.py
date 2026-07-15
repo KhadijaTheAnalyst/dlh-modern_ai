@@ -2,7 +2,6 @@
 """Scrape a static product listing page using Selenium (headless Chrome)."""
 import time
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 
 
 def scrape_products_list(url):
@@ -55,24 +54,29 @@ def scrape_products_list(url):
         # Every product card on this site is a <div class="thumbnail">.
         # find_elements() (plural) returns a list of ALL matches, unlike
         # find_element() (singular) which returns just the first one.
-        product_cards = driver.find_elements(By.CLASS_NAME, "thumbnail")
+        # We use the raw locator string "class name" instead of
+        # importing selenium's By class, since By.CLASS_NAME is just
+        # that same string under the hood - this keeps us within the
+        # "only import time and webdriver" constraint.
+        product_cards = driver.find_elements("class name", "thumbnail")
 
         for card in product_cards:
             # The product name lives on an <a class="title"> tag, e.g.
-            #   <a href="..." class="title" title="Packard 255 G2">Packard 255 G2</a>
+            #   <a href="..." class="title"
+            #           title="Packard 255 G2">Packard 255 G2</a>
             # We read the "title" ATTRIBUTE (not the visible text), since
             # the visible text can sometimes get truncated with "..." for
             # long names, but the title attribute always holds the full name.
-            title_element = card.find_element(By.CLASS_NAME, "title")
+            title_element = card.find_element("class name", "title")
             title = title_element.get_attribute("title")
 
             # The price sits in <h4 class="price">$416.99</h4>.
             # .text reads the visible text content of the element.
-            price = card.find_element(By.CLASS_NAME, "price").text
+            price = card.find_element("class name", "price").text
 
             # The description sits in <p class="description">...</p>.
             description = card.find_element(
-                By.CLASS_NAME, "description"
+                "class name", "description"
             ).text
 
             # The star rating doesn't have its own class - it's a <p> tag
@@ -85,7 +89,7 @@ def scrape_products_list(url):
             # A CSS selector lets us target "any <p> that has a
             # data-rating attribute" inside the ratings div.
             rating_element = card.find_element(
-                By.CSS_SELECTOR, ".ratings p[data-rating]"
+                "css selector", ".ratings p[data-rating]"
             )
             rating = int(rating_element.get_attribute("data-rating"))
 
