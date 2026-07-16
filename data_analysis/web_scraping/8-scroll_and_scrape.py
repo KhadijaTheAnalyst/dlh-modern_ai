@@ -3,7 +3,6 @@
 scrolling repeatedly to load every product before extracting."""
 import time
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 
 
 def scroll_and_scrape(url, scroll_pause=2.0):
@@ -19,9 +18,10 @@ def scroll_and_scrape(url, scroll_pause=2.0):
         list[dict]: One dict per unique product.
     """
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
+    options.add_argument("--headless")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
 
@@ -50,19 +50,19 @@ def scroll_and_scrape(url, scroll_pause=2.0):
         products = []
         seen = set()
 
-        product_cards = driver.find_elements(By.CLASS_NAME, "thumbnail")
+        product_cards = driver.find_elements("class name", "thumbnail")
 
         for card in product_cards:
             title = card.find_element(
-                By.CLASS_NAME, "title"
+                "class name", "title"
             ).get_attribute("title")
-            price = card.find_element(By.CLASS_NAME, "price").text
+            price = card.find_element("class name", "price").text
             description = card.find_element(
-                By.CLASS_NAME, "description"
+                "class name", "description"
             ).text
 
             star_elements = card.find_elements(
-                By.CSS_SELECTOR, ".ratings p.ws-icon.ws-icon-star"
+                "css selector", ".ratings [class~='ws-icon-star']"
             )
             rating = len(star_elements)
 
