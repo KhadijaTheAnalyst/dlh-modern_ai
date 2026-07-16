@@ -1,29 +1,31 @@
 #!/usr/bin/env python3
 """
-Module for visualizing pairwise correlations between continuous
-numeric features using a heatmap.
+Module for visualizing churn rate broken down by a categorical
+feature.
 """
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def plot_correlation_heatmap(df):
+def plot_categorical_vs_churn(df, col):
     """
-    Generates an annotated correlation heatmap for the numeric
-    columns of a DataFrame.
+    Generates a bar plot of churn rate per category for a
+    given categorical column.
 
     Args:
-        df (pd.DataFrame): DataFrame to visualize.
+        df (pd.DataFrame): DataFrame with a 'Churn' column.
+        col (str): Name of the categorical column to group by.
 
     Returns:
         None
     """
-    plt.figure(figsize=(6, 5))
+    plt.figure(figsize=(12, 8))
 
-    df_corr = df.select_dtypes(include=['int64', 'float64'])
+    churn_numeric = df['Churn'].map({'No': 0, 'Yes': 1})
+    churn_rate = churn_numeric.groupby(df[col]).mean()
 
-    sns.heatmap(
-        df_corr.corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1
-    )
-    plt.title('Correlation Matrix')
+    plt.bar(churn_rate.index, churn_rate.values)
+
+    plt.title(f'Churn Rate by {col}')
+    plt.ylabel('Churn Rate')
+    plt.xticks(rotation=45)
     plt.show()
