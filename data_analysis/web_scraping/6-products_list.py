@@ -15,77 +15,31 @@ def scrape_products(url):
         list[dict]: One dict per product, each shaped like:
             {"title": str, "price": str, "description": str, "rating": int}
     """
-    # Selenium options configure HOW the browser launches, before we
-    # even open a page.
     options = webdriver.ChromeOptions()
-
-    # Run Chrome with no visible UI window - useful on servers/Colab
-    # where there's no display to show a real browser on.
     options.add_argument("--headless=new")
-
-    # Set a fixed browser window size. Some pages render their layout
-    # differently (or hide elements) at very small/default sizes, so we
-    # pin it to a common desktop resolution for consistent results.
     options.add_argument("--window-size=1920,1080")
-
-    # Disables Chrome's own process sandboxing. It's commonly required
-    # when running Chrome as root inside containers (like Colab or CI
-    # environments), where the sandbox setup Chrome expects isn't
-    # available.
     options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
-    # This actually launches a real (headless) Chrome browser process,
-    # configured with the options above.
     driver = webdriver.Chrome(options=options)
 
     try:
-        # Navigate the browser to the target page, just like typing a
-        # URL into the address bar and hitting Enter.
         driver.get(url)
-
-        # A short pause to let the page finish rendering before we start
-        # searching it for elements. This is a static page so it likely
-        # doesn't need this, but it's cheap insurance against timing
-        # issues (e.g. slow network, slow initial paint).
         time.sleep(1)
 
         products = []
-
-        # Every product card on this site is a <div class="thumbnail">.
-        # find_elements() (plural) returns a list of ALL matches, unlike
-        # find_element() (singular) which returns just the first one.
-        # The locator here is passed as a plain string pair, matching
-        # what the underlying element-finding API expects.
         product_cards = driver.find_elements("class name", "thumbnail")
 
         for card in product_cards:
-            # The product name lives on an <a class="title"> tag, e.g.
-            # <a href="..." class="title" title="Packard 255 G2">Packard
-            #                                            255 G2</a>
-            # We read the "title" ATTRIBUTE (not the visible text), since
-            # the visible text can sometimes get truncated with "..." for
-            # long names, but the title attribute always holds the full name.
             title_element = card.find_element("class name", "title")
             title = title_element.get_attribute("title")
 
-            # The price sits in <h4 class="price">$416.99</h4>.
-            # .text reads the visible text content of the element.
             price = card.find_element("class name", "price").text
 
-            # The description sits in <p class="description">...</p>.
             description = card.find_element(
                 "class name", "description"
             ).text
 
-            # The star rating doesn't have its own class - it's a <p> tag
-            # with a "data-rating" attribute holding the numeric value,
-            # nested inside a <div class="ratings"> wrapper, e.g.
-            #   <div class="ratings">
-            #     <p data-rating="2">...</p>
-            #     ...
-            #   </div>
-            # A selector lets us target "any <p> that has a data-rating
-            # attribute" inside the ratings div.
             rating_element = card.find_element(
                 "css selector", ".ratings p[data-rating]"
             )
@@ -100,7 +54,4 @@ def scrape_products(url):
 
         return products
     finally:
-        # Always close the browser process when we're done, whether we
-        # succeeded or an exception was raised above. Leaving Chrome
-        # processes running would waste memory/resources over time.
         driver.quit()
