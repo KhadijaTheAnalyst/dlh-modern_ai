@@ -4,7 +4,7 @@ import time
 from selenium import webdriver
 
 
-def scrape_products_list(url):
+def scrape_products(url):
     """Scrape all products on a webscraper.io-style category page.
 
     Args:
