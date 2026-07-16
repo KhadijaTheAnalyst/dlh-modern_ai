@@ -39,7 +39,7 @@ def scrape_product_detail(url, delay=2.0):
         ).text
 
         star_elements = driver.find_elements(
-            "css selector", ".ratings p.ws-icon.ws-icon-star"
+            "css selector", ".ratings [class~='ws-icon-star']"
         )
         rating = len(star_elements)
 
