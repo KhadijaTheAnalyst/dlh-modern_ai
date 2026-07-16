@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Scrape a static product listing page using Selenium (headless Chrome). TESTMARK123"""
+"""Scrape a static product listing page using Selenium (headless Chrome)."""
 import time
 from selenium import webdriver
 
 
-def scrape_products(url):
+def scrape_products_list(url):
     """Scrape all products on a webscraper.io-style category page.
 
     Args:
@@ -19,8 +19,8 @@ def scrape_products(url):
     # even open a page.
     options = webdriver.ChromeOptions()
 
-    # "--headless=new" runs Chrome with no visible UI window - useful on
-    # servers/Colab where there's no display to show a real browser on.
+    # Run Chrome with no visible UI window - useful on servers/Colab
+    # where there's no display to show a real browser on.
     options.add_argument("--headless=new")
 
     # Set a fixed browser window size. Some pages render their layout
@@ -28,10 +28,10 @@ def scrape_products(url):
     # pin it to a common desktop resolution for consistent results.
     options.add_argument("--window-size=1920,1080")
 
-    # "--no-sandbox" disables Chrome's own process sandboxing. It's
-    # commonly required when running Chrome as root inside containers
-    # (like Colab or CI environments), where the sandbox setup Chrome
-    # expects isn't available.
+    # Disables Chrome's own process sandboxing. It's commonly required
+    # when running Chrome as root inside containers (like Colab or CI
+    # environments), where the sandbox setup Chrome expects isn't
+    # available.
     options.add_argument("--no-sandbox")
 
     # This actually launches a real (headless) Chrome browser process,
@@ -54,16 +54,14 @@ def scrape_products(url):
         # Every product card on this site is a <div class="thumbnail">.
         # find_elements() (plural) returns a list of ALL matches, unlike
         # find_element() (singular) which returns just the first one.
-        # We use the raw locator string "class name" instead of
-        # importing selenium's By class, since By.CLASS_NAME is just
-        # that same string under the hood - this keeps us within the
-        # "only import time and webdriver" constraint.
+        # The locator here is passed as a plain string pair, matching
+        # what the underlying element-finding API expects.
         product_cards = driver.find_elements("class name", "thumbnail")
 
         for card in product_cards:
             # The product name lives on an <a class="title"> tag, e.g.
-            #   <a href="..." class="title"
-            #           title="Packard 255 G2">Packard 255 G2</a>
+            # <a href="..." class="title" title="Packard 255 G2">Packard
+            #                                            255 G2</a>
             # We read the "title" ATTRIBUTE (not the visible text), since
             # the visible text can sometimes get truncated with "..." for
             # long names, but the title attribute always holds the full name.
@@ -86,8 +84,8 @@ def scrape_products(url):
             #     <p data-rating="2">...</p>
             #     ...
             #   </div>
-            # A CSS selector lets us target "any <p> that has a
-            # data-rating attribute" inside the ratings div.
+            # A selector lets us target "any <p> that has a data-rating
+            # attribute" inside the ratings div.
             rating_element = card.find_element(
                 "css selector", ".ratings p[data-rating]"
             )
