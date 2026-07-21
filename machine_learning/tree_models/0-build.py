@@ -43,11 +43,11 @@ def build_decision_tree(min_samples_leaf, min_samples_split, random_state):
     # Always pass hyperparameters as keyword arguments (not positional!)
     # to avoid accidentally mismatching them to the wrong constructor slot.
     model = tree.DecisionTreeClassifier(
-        criterion='gini',                    # split quality measure
-        max_depth=None,                      # no depth limit
-        min_samples_leaf=min_samples_leaf,   # regularization knob #1
-        min_samples_split=min_samples_split, # regularization knob #2
-        random_state=random_state            # reproducibility
+        criterion='gini',                     # split quality measure
+        max_depth=None,                       # no depth limit
+        min_samples_leaf=min_samples_leaf,    # regularization knob #1
+        min_samples_split=min_samples_split,  # regularization knob #2
+        random_state=random_state             # reproducibility
     )
 
     return model
