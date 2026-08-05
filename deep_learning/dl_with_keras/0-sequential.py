@@ -16,7 +16,8 @@ def build_model(input_dim, neurons_h):
         model: Keras model.
     """
     model = keras.Sequential([
-        layers.Dense(neurons_h, activation='sigmoid', input_shape=(input_dim,)),
+        layers.Dense(neurons_h, activation='sigmoid',
+                     input_shape=(input_dim,)),
         layers.Dense(10, activation='softmax')
     ])
     return model
