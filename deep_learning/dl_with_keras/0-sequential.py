@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""Build a shallow neural network with single hidden layer
+    using the Keras sequential API."""
+
 from tensorflow import keras
 from tensorflow.keras import layers
 
