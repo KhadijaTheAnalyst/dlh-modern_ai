@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Save and load a full Keras model (architecture, weights, optimizer state)."""
+"""Save and load a full Keras model
+(architecture, weights, optimizer state)."""
 from tensorflow import keras
 
 
