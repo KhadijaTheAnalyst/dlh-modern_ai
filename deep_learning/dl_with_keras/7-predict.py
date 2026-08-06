@@ -16,5 +16,5 @@ def predict(model, X, verbose=0):
         predictions: A list of predicted class labels for the input data.
     """
     probabilities = model.predict(X, verbose=verbose)
-    predictions = tf.argmax(probabilities, axis=1).numpy().tolist()
+    predictions = tf.argmax(probabilities, axis=1)
     return predictions
