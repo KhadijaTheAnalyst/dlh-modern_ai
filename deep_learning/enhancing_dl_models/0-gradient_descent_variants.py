@@ -12,7 +12,7 @@ The function supports three variants:
 - mini_batch: Small batch updates (best practical performance)
 """
 
-from tensorflow.keras.optimizers import SGD
+from tensorflow import keras
 
 
 def train_with_gradient_descent_variant(variant, learning_rate,
@@ -78,7 +78,7 @@ def train_with_gradient_descent_variant(variant, learning_rate,
     """
 
     # Create SGD optimizer with specified learning rate
-    optimizer = SGD(learning_rate=learning_rate)
+    optimizer = keras.optimizers.SGD(learning_rate=learning_rate)
 
     # Determine batch size based on selected variant
     if variant == 'batch':
