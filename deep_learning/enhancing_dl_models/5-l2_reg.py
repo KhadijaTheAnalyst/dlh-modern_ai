@@ -24,33 +24,18 @@ def build_model_with_L2_regularization(input_dim, hidden_units,
 
     Args:
         input_dim (int): The number of input features.
-                        Example: 784 for MNIST (28x28 flattened)
         hidden_units (int): The number of neurons in each hidden layer.
-                           Typical range: [32, 256]
         n_layers (int): The number of hidden layers to include.
-                       Typical range: [1, 5]
         lambda_l2 (float): The strength of L2 regularization.
-                          Typical range: [1e-6, 1e-2]
                           - 0: No regularization
                           - Higher values: Stronger regularization
 
     Returns:
         model (keras.Model): A compiled Keras model with:
             - InputLayer with shape (input_dim,)
-            - n_layers Dense hidden layers with ReLU activation
-                and L2 regularization
+            - n_layers Dense hidden layers with
+                ReLU activation and L2 regularization
             - Dense output layer (10 units) with softmax activation
-
-    Raises:
-        ValueError: If n_layers < 1 or lambda_l2 < 0.
-
-    Examples:
-        >>> # Model without regularization
-        >>> model = build_model_with_L2_regularization(784, 64, 3, lambda_l2=0)
-
-        >>> # Model with strong regularization
-        >>> model = build_model_with_L2_regularization
-                    (784, 64, 3, lambda_l2=1e-6)
 
     What is L2 Regularization:
     -------------------------
@@ -62,32 +47,6 @@ def build_model_with_L2_regularization(input_dim, hidden_units,
     - Simplifies the model
     - Reduces overfitting
     - Improves generalization to test data
-
-    Why L2 Regularization Works:
-    ---------------------------
-    - Large weights can lead to complex, overfitted models
-    - Penalizing large weights forces the model to use smaller weights
-    - Smaller weights mean simpler decision boundaries
-    - Simpler models generalize better to new data
-
-    L2 vs Other Regularization:
-    --------------------------
-    - L2 (Ridge): Penalizes magnitude of weights (preferred for most cases)
-    - L1 (Lasso): Forces some weights to zero (sparse models)
-    - L2 is smoother: Distributes the penalty across all weights
-    - L1 is sharper: Can eliminate less important features
-
-    Lambda Tuning:
-    ---------------
-    - lambda_l2 = 0: No regularization (may overfit)
-    - lambda_l2 = 1e-6: Weak regularization (most common)
-    - lambda_l2 = 1e-4: Medium regularization
-    - lambda_l2 = 1e-2: Strong regularization (may underfit)
-
-    Effect on Weights:
-    -----------------
-    Without L2:  Weights can grow large → Complex decision boundaries
-    With L2:     Weights stay small → Simple decision boundaries
     """
 
     # Input validation
@@ -96,11 +55,8 @@ def build_model_with_L2_regularization(input_dim, hidden_units,
     if lambda_l2 < 0:
         raise ValueError("lambda_l2 must be non-negative")
 
-    # Create L2 regularizer (or None if lambda_l2 is 0)
-    if lambda_l2 > 0:
-        l2_regularizer = keras.regularizers.L2(lambda_l2)
-    else:
-        l2_regularizer = None
+    # Create L2 regularizer (always, even if lambda_l2 is 0)
+    l2_regularizer = keras.regularizers.L2(lambda_l2)
 
     # Step 1: Build model using Functional API
     # Create input layer
