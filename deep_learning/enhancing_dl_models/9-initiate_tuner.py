@@ -32,46 +32,17 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
         seed (int): Random seed for reproducibility.
         hyperband_iterations (int): Number of iterations for
                                     Hyperband tuner.
-                                    Typical range: [1, 10]
         max_trials (int): Maximum number of trials for RandomSearch
                          and BayesianOptimization.
-                         Typical range: [5, 100]
         objective (str): Metric to optimize.
-                        Common options: 'val_accuracy', 'val_loss'
+                        Options: 'val_accuracy', 'val_loss'
         overwrite (bool): Whether to overwrite previous tuning
                          project. Default: True
 
     Returns:
         tuner (keras_tuner.Tuner): A configured Keras Tuner
                                    instance ready for hyperparameter
-                                   search. Type depends on
-                                   tuner_type argument.
-
-    Raises:
-        ValueError: If tuner_type is not one of the valid options.
-
-    Tuner Types Explained:
-    ----------------------
-    `Hyperband`:
-        - Algorithm: Hyperband (fast, eliminates bad configs early)
-        - Speed: Very fast ⭐⭐⭐⭐⭐
-        - Quality: Good (eliminates poor configurations)
-        - Best for: Quick tuning, limited compute resources
-        - Key parameter: hyperband_iterations
-
-    `RandomSearch`:
-        - Algorithm: Random sampling from search space
-        - Speed: Medium ⭐⭐⭐
-        - Quality: Good (but random, less efficient)
-        - Best for: Baseline comparisons, simple problems
-        - Key parameter: max_trials
-
-    `BayesianOptimization`:
-        - Algorithm: Bayesian optimization (smart sampling)
-        - Speed: Slow ⭐⭐
-        - Quality: Excellent (learns from previous trials)
-        - Best for: Complex problems, maximize accuracy
-        - Key parameter: max_trials
+                                   search.
     """
 
     # Normalize tuner_type
@@ -85,7 +56,7 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
             objective=objective,
             seed=seed,
             max_epochs=100,
-            iterations=hyperband_iterations,
+            factor=3,
             overwrite=overwrite,
             directory='tuner_results',
             project_name='hyperband'
@@ -104,7 +75,7 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
         )
 
     elif tuner_type == 'BayesianOptimization':
-        # BayesianOptimization tuner: Smart, probabilistic search
+        # BayesianOptimization tuner: Smart search
         tuner = keras_tuner.BayesianOptimization(
             hypermodel=build_model,
             objective=objective,
