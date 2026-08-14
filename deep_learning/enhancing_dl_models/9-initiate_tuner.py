@@ -16,33 +16,6 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
                    max_trials, objective, overwrite=True):
     """
     Initialize and return a Keras Tuner for hyperparameter tuning.
-
-    This function creates a tuner based on the specified type,
-    configured with the given hyperparameters and optimization
-    settings.
-
-    Args:
-        tuner_type (str): Type of tuner to create.
-                         Options: 'Hyperband', 'RandomSearch',
-                         'BayesianOptimization'
-        build_model (function): Function that builds and compiles
-                                a Keras model.
-                                Takes hp (HyperParameters) as
-                                argument.
-        seed (int): Random seed for reproducibility.
-        hyperband_iterations (int): Number of iterations for
-                                    Hyperband tuner.
-        max_trials (int): Maximum number of trials for RandomSearch
-                         and BayesianOptimization.
-        objective (str): Metric to optimize.
-                        Options: 'val_accuracy', 'val_loss'
-        overwrite (bool): Whether to overwrite previous tuning
-                         project. Default: True
-
-    Returns:
-        tuner (keras_tuner.Tuner): A configured Keras Tuner
-                                   instance ready for hyperparameter
-                                   search.
     """
 
     # Normalize tuner_type
@@ -51,12 +24,13 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
     # Create tuner based on type
     if tuner_type == 'Hyperband':
         # Hyperband tuner: Fast, eliminates bad configs early
+        # factor controls halving rate, lower factor = more iterations
         tuner = keras_tuner.Hyperband(
             hypermodel=build_model,
             objective=objective,
             seed=seed,
             max_epochs=100,
-            iterations=hyperband_iterations,
+            factor=2,
             overwrite=overwrite,
             directory='tuner_results',
             project_name='hyperband'
