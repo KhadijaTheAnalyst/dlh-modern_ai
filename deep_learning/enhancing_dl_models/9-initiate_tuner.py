@@ -56,7 +56,7 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
             objective=objective,
             seed=seed,
             max_epochs=100,
-            factor=3,
+            iterations=hyperband_iterations,
             overwrite=overwrite,
             directory='tuner_results',
             project_name='hyperband'
