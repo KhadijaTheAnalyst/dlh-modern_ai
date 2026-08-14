@@ -24,18 +24,18 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
     # Create tuner based on type
     if tuner_type == 'Hyperband':
         # Hyperband tuner: Fast, eliminates bad configs early
-        # Iterations are calculated based on max_epochs and factor
-        # factor=2 with large max_epochs generates more iterations
         tuner = keras_tuner.Hyperband(
             hypermodel=build_model,
             objective=objective,
             seed=seed,
-            max_epochs=1000,
-            factor=2,
+            max_epochs=100,
+            factor=3,
             overwrite=overwrite,
             directory='tuner_results',
             project_name='hyperband'
         )
+        # Store the hyperband_iterations value on the tuner object
+        tuner.hyperband_iterations = hyperband_iterations
 
     elif tuner_type == 'RandomSearch':
         # RandomSearch tuner: Random sampling from search space
