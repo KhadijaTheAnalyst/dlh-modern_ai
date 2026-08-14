@@ -24,12 +24,13 @@ def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
     # Create tuner based on type
     if tuner_type == 'Hyperband':
         # Hyperband tuner: Fast, eliminates bad configs early
-        # factor controls halving rate, lower factor = more iterations
+        # Iterations are calculated based on max_epochs and factor
+        # factor=2 with large max_epochs generates more iterations
         tuner = keras_tuner.Hyperband(
             hypermodel=build_model,
             objective=objective,
             seed=seed,
-            max_epochs=100,
+            max_epochs=1000,
             factor=2,
             overwrite=overwrite,
             directory='tuner_results',
