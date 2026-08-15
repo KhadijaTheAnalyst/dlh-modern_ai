@@ -1,70 +1,54 @@
 #!/usr/bin/env python3
 """
 Task 9: Initiate the Tuner
-
-This module implements the initiate_tuner function which creates and
-returns a configured Keras Tuner for hyperparameter optimization.
-
-Supports three tuner types: Hyperband, RandomSearch, and
-BayesianOptimization.
 """
 
-import keras_tuner
+import keras_tuner as kt
 
 
-def initiate_tuner(tuner_type, build_model, seed, hyperband_iterations,
-                   max_trials, objective, overwrite=True):
+def initiate_tuner(tuner_type, build_model, seed,
+                   hyperband_iterations, max_trials,
+                   objective="val_accuracy"):
     """
-    Initialize and return a Keras Tuner for hyperparameter tuning.
+    Initialize a Keras Tuner for hyperparameter tuning.
     """
 
-    # Normalize tuner_type
-    tuner_type = tuner_type.strip()
-
-    # Create tuner based on type
     if tuner_type == 'Hyperband':
-        # Hyperband tuner: Fast, eliminates bad configs early
-        tuner = keras_tuner.Hyperband(
-            hypermodel=build_model,
+        tuner = kt.Hyperband(
+            build_model,
             objective=objective,
-            seed=seed,
-            max_epochs=100,
+            max_epochs=10,
             factor=3,
-            overwrite=overwrite,
-            directory='tuner_results',
-            project_name='hyperband'
+            hyperband_iterations=hyperband_iterations,
+            seed=seed,
+            directory='my_dir',
+            project_name='helloworld',
+            overwrite=True
         )
-        # Store the hyperband_iterations value on the tuner object
-        tuner.hyperband_iterations = hyperband_iterations
 
     elif tuner_type == 'RandomSearch':
-        # RandomSearch tuner: Random sampling from search space
-        tuner = keras_tuner.RandomSearch(
-            hypermodel=build_model,
+        tuner = kt.RandomSearch(
+            build_model,
             objective=objective,
-            seed=seed,
             max_trials=max_trials,
-            overwrite=overwrite,
-            directory='tuner_results',
-            project_name='random_search'
+            seed=seed,
+            directory='my_dir',
+            project_name='helloworld',
+            overwrite=True
         )
 
     elif tuner_type == 'BayesianOptimization':
-        # BayesianOptimization tuner: Smart search
-        tuner = keras_tuner.BayesianOptimization(
-            hypermodel=build_model,
+        tuner = kt.BayesianOptimization(
+            build_model,
             objective=objective,
-            seed=seed,
             max_trials=max_trials,
-            overwrite=overwrite,
-            directory='tuner_results',
-            project_name='bayesian_optimization'
+            seed=seed,
+            directory='my_dir',
+            project_name='helloworld',
+            overwrite=True
         )
 
     else:
-        raise ValueError(
-            f"tuner_type must be 'Hyperband', 'RandomSearch', "
-            f"or 'BayesianOptimization', got: {tuner_type}"
-        )
+        raise ValueError(f"Unknown tuner type: {tuner_type}")
 
     return tuner
