@@ -43,12 +43,10 @@ def create_cnn_model(
             filters=n_filters,
             kernel_size=kernel_size,
             activation=activation,
-            padding='same',
         ))
         model.add(pooling_layer(pool_size=(2, 2)))
 
     model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dense(128, activation='relu'))
     model.add(keras.layers.Dense(10, activation='softmax'))
 
     model.compile(
