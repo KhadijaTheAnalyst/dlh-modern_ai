@@ -10,9 +10,10 @@ def unfreeze_top_layers(model, n_layers):
             base_model = layer
             break
 
-    base_model.trainable = True
-
     for layer in base_model.layers[:-n_layers]:
         layer.trainable = False
+
+    for layer in base_model.layers[-n_layers:]:
+        layer.trainable = True
 
     return None
