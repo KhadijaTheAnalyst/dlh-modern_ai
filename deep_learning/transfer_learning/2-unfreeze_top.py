@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Unfreezes the top layers of a pretrained backbone for fine-tuning."""
-from tensorflow import keras
 
 
 def unfreeze_top_layers(model, n_layers):
@@ -21,7 +20,12 @@ def unfreeze_top_layers(model, n_layers):
     """
     base_model = model
     for layer in model.layers:
-        if isinstance(layer, keras.Model):
+        # A nested Keras model (like a pretrained backbone) exposes
+        # its own `.layers` list, while an ordinary layer (Conv2D,
+        # Dense, etc.) does not. Checking for that attribute finds
+        # the backbone without needing to import keras just to call
+        # isinstance(layer, keras.Model).
+        if hasattr(layer, "layers"):
             base_model = layer
             break
 
