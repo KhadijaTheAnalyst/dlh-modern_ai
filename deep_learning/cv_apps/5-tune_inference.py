@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
+"""Inference parameter tuning for YOLOv8 object detection.
+
+Performs grid search over confidence and IoU thresholds to find
+optimal inference parameters for best performance on validation set.
+"""
 from ultralytics import YOLO
 
 
 def inference_tuning(data_yaml, model, conf_list=None, iou_list=None,
                      imgsz=640):
+    """Perform grid search over confidence and IoU thresholds.
+
+    Args:
+        data_yaml (str): Path to dataset YAML file.
+        model (str or YOLO): Path to trained model or YOLO model object.
+        conf_list (list): Confidence thresholds to test.
+        iou_list (list): IoU thresholds for NMS to test.
+        imgsz (int): Image size for validation.
+
+    Returns:
+        list: Results for each confidence/IoU combination.
+    """
     if conf_list is None:
         conf_list = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
     if iou_list is None:
