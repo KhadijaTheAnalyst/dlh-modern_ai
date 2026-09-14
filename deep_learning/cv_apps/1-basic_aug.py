@@ -1,8 +1,5 @@
-#!/usr/bin/env python3
 import albumentations as A
 import numpy as np
-
-np.random.seed(42)
 
 def basic_aug(image, bboxes, labels):
     transform = A.Compose([
@@ -16,10 +13,10 @@ def basic_aug(image, bboxes, labels):
             translate_percent=(-0.1, 0.1),
             scale=(0.9, 1.1),
             rotate=(-30, 0),
-            p=0.5,
-            border_mode=0
+            p=0.5
         )
-    ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']))
+    ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']),
+       seed=42)
 
     transformed = transform(image=image, bboxes=bboxes, class_labels=labels)
 
