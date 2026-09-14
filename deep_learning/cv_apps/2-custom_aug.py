@@ -34,8 +34,9 @@ def custom_aug(image, bboxes, labels):
             A.ElasticTransform(alpha=1, sigma=50, p=0.2),
             A.OpticalDistortion(distort_limit=0.05, p=0.2)
         ], p=0.9)
-    ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']),
-       seed=42)
+    ], bbox_params=A.BboxParams(format='pascal_voc',
+                                label_fields=['class_labels']),
+                                seed=42)
 
     # Apply augmentation
     transformed = transform(image=image, bboxes=bboxes, class_labels=labels)

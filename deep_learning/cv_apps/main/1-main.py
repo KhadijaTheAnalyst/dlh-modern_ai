@@ -1,46 +1,57 @@
 #!/usr/bin/env python3
+"""
+Basic data augmentation for object detection using Albumentations.
 
-import cv2
+Applies YOLO-compatible transformations including:
+- Random horizontal flipping
+- Brightness/contrast augmentation
+- Affine transformations (translation, scaling, rotation)
+"""
+
+import albumentations as A
 import numpy as np
-import matplotlib.pyplot as plt
-basic_aug = __import__('1-basic_aug').basic_aug
 
-def visualize_boxes(image, boxes, labels=None, title="Image"):
-    img = image.copy()
-    for i, box in enumerate(boxes):
-        x1, y1, x2, y2 = map(int, box)
-        cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-        if labels:
-            cv2.putText(img, labels[i], (x1, y1 - 5),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
-    plt.imshow(img)
-    plt.title(title)
-    plt.axis("off")
-    plt.show()
+# Set random seed for reproducibility (module level)
+np.random.seed(42)
 
 
-image_path = "datasets/detection/images/train/000001.jpg"
-label_path = "datasets/detection/labels/train/000001.txt"
+def basic_aug(image, bboxes, labels):
+    """
+    Apply basic data augmentation to image and bounding boxes.
 
-image = cv2.imread(image_path)
-image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    Args:
+        image (np.ndarray): Input image in RGB format
+        bboxes (List[List[int]]): Bounding boxes in Pascal VOC format
+                                  [[x1, y1, x2, y2], ...]
+        labels (List[int]): Class labels corresponding to each bounding box
 
-# YOLO label → Pascal VOC
-h, w, _ = image.shape
-bboxes = []
-labels = []
+    Returns:
+        tuple: (augmented_image, augmented_bboxes, augmented_labels)
+            - augmented_image (np.ndarray): Augmented image
+            - augmented_bboxes (np.ndarray): Augmented bounding boxes
+            - augmented_labels (List[int]): Class labels (unchanged)
+    """
+    # Define augmentation pipeline
+    transform = A.Compose([
+        A.HorizontalFlip(p=0.5),
+        A.RandomBrightnessContrast(
+            brightness_limit=0.2,
+            contrast_limit=0.2,
+            p=0.2
+        ),
+        A.Affine(
+            translate_percent=(-0.1, 0.1),
+            scale=(0.9, 1.1),
+            rotate=(-30, 0),
+            p=0.5
+        )
+    ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']))
 
-with open(label_path) as f:
-    for line in f:
-        cls, xc, yc, bw, bh = map(float, line.split())
-        x1 = (xc - bw / 2) * w
-        y1 = (yc - bh / 2) * h
-        x2 = (xc + bw / 2) * w
-        y2 = (yc + bh / 2) * h
-        bboxes.append([x1, y1, x2, y2])
-        labels.append(str(int(cls)))
+    # Apply augmentation
+    transformed = transform(image=image, bboxes=bboxes, class_labels=labels)
 
-aug_img, aug_boxes, aug_labels = basic_aug(image, bboxes, labels)
+    augmented_image = transformed['image']
+    augmented_bboxes = np.array(transformed['bboxes'])
+    augmented_labels = transformed['class_labels']
 
-visualize_boxes(image, bboxes, labels, "Original")
-visualize_boxes(aug_img, aug_boxes, aug_labels, "Augmented")
+    return augmented_image, augmented_bboxes, augmented_labels
