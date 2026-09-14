@@ -1,13 +1,9 @@
-#!/usr/bin/env python3
-
 import albumentations as A
 import numpy as np
-import cv2
 
 np.random.seed(42)
 
 def basic_aug(image, bboxes, labels):
-    """Apply basic data augmentation."""
     transform = A.Compose([
         A.HorizontalFlip(p=0.5),
         A.RandomBrightnessContrast(
@@ -20,8 +16,7 @@ def basic_aug(image, bboxes, labels):
             scale=(0.9, 1.1),
             rotate=(-30, 0),
             p=0.5,
-            border_mode=cv2.BORDER_CONSTANT,
-            cval=0
+            border_mode=0
         )
     ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']))
 
