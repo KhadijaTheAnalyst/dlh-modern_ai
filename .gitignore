@@ -1,0 +1,30 @@
+﻿# Obsidian
+.obsidian/
+
+# Data and datasets
+datasets/
+*.tar
+*.tar.gz
+*.zip
+__MACOSX/
+
+# Jupyter notebooks output
+*.ipynb_checkpoints/
+.ipynb
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.env

@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+"""
+Task 9: Initiate the Tuner
+"""
+
+import keras_tuner as kt
+
+
+def initiate_tuner(tuner_type, build_model, seed,
+                   hyperband_iterations, max_trials,
+                   objective="val_accuracy"):
+    """
+    Initialize a Keras Tuner for hyperparameter tuning.
+    """
+
+    if tuner_type == 'Hyperband':
+        tuner = kt.Hyperband(
+            build_model,
+            objective=objective,
+            max_epochs=10,
+            factor=3,
+            hyperband_iterations=hyperband_iterations,
+            seed=seed,
+            directory='my_dir',
+            project_name='helloworld',
+            overwrite=True
+        )
+
+    elif tuner_type == 'RandomSearch':
+        tuner = kt.RandomSearch(
+            build_model,
+            objective=objective,
+            max_trials=max_trials,
+            seed=seed,
+            directory='my_dir',
+            project_name='helloworld',
+            overwrite=True
+        )
+
+    elif tuner_type == 'BayesianOptimization':
+        tuner = kt.BayesianOptimization(
+            build_model,
+            objective=objective,
+            max_trials=max_trials,
+            seed=seed,
+            directory='my_dir',
+            project_name='helloworld',
+            overwrite=True
+        )
+
+    else:
+        raise ValueError(f"Unknown tuner type: {tuner_type}")
+
+    return tuner
