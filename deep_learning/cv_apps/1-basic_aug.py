@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import albumentations as A
 import numpy as np
 
