@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from ultralytics import YOLO
 
 def train_with_augmentation(data_yaml, model="yolov8n.pt", aug=None, custom_albu=None,
