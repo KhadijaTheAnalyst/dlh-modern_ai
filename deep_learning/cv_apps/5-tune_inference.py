@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from ultralytics import YOLO
 
 def inference_tuning(data_yaml, model, conf_list=None, iou_list=None, imgsz=640):
