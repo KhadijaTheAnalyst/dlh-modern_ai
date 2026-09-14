@@ -38,7 +38,7 @@ def basic_aug(image, bboxes, labels):
         )
     ], bbox_params=A.BboxParams(format='pascal_voc',
                                  label_fields=['class_labels']),
-       seed=42)
+                                 seed=42)
 
     transformed = transform(image=image, bboxes=bboxes, class_labels=labels)
 
