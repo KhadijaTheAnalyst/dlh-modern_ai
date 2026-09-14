@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Basic data augmentation for object detection using Albumentations.
 
 Applies YOLO-compatible transformations including random horizontal flipping,
