@@ -11,6 +11,9 @@ Applies YOLO-compatible transformations including:
 import albumentations as A
 import numpy as np
 
+# Set random seed for reproducibility (module level)
+np.random.seed(42)
+
 
 def basic_aug(image, bboxes, labels):
     """
@@ -31,15 +34,18 @@ def basic_aug(image, bboxes, labels):
     # Define augmentation pipeline
     transform = A.Compose([
         A.HorizontalFlip(p=0.5),
-        A.RandomBrightnessContrast(p=0.2),
+        A.RandomBrightnessContrast(
+            brightness_limit=0.2,
+            contrast_limit=0.2,
+            p=0.2
+        ),
         A.Affine(
-            translate_percent=0.1,
-            scale=0.1,
+            translate_percent=(-0.1, 0.1),
+            scale=(0.9, 1.1),
             rotate=(-30, 0),
             p=0.5
         )
-    ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']),
-       seed=42)
+    ], bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']))
 
     # Apply augmentation
     transformed = transform(image=image, bboxes=bboxes, class_labels=labels)
