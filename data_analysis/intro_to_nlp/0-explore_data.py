@@ -30,10 +30,7 @@ def explore_data(df):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
 
     # Left subplot: bar chart of ham vs spam counts
-    sns.barplot(x=df['label'].value_counts().index,
-                y=df['label'].value_counts().values,
-                ax=ax1,
-                palette='Set2')
+    sns.countplot(data=df, x='label', ax=ax1, palette='Set2')
     ax1.set_title("Ham vs Spam Counts")
     ax1.set_xlabel("label")
     ax1.set_ylabel("count")
