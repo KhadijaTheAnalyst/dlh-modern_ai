@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-This module provides text cleaning and normalization functions for SMS messages.
+Text cleaning and normalization functions for SMS messages.
 """
 import re
 import emoji
@@ -46,7 +46,7 @@ def clean_text(text, replace_num=True,
     Returns:
         str: Cleaned and normalized text.
     """
-    # 1. Handle None input, lowercase and strip
+    # 1. Handle None input and type validation, lowercase and strip
     if text is None or not isinstance(text, str):
         return ""
     text = text.lower().strip()
