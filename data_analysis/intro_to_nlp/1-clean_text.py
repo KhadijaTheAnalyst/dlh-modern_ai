@@ -120,8 +120,8 @@ def clean_text(text, replace_num=True,
         pass
 
     # 7. Collapse repeated ! or ?
-    text = re.sub(r'!{2,}', '!', text)
-    text = re.sub(r'\?{2,}', '?', text)
+    text = re.sub(r'!+', '!', text)
+    text = re.sub(r'\?+', '?', text)
 
     # 8. Collapse whitespace and strip
     text = re.sub(r'\s+', ' ', text).strip()
