@@ -47,7 +47,7 @@ def clean_text(text, replace_num=True,
         str: Cleaned and normalized text.
     """
     # 1. Handle None input, lowercase and strip
-    if text is None:
+    if text is None or not isinstance(text, str):
         return ""
     text = text.lower().strip()
 
