@@ -1,84 +1,35 @@
 #!/usr/bin/env python3
 """
-Token normalization via lemmatization or stemming.
+N-gram generation from token lists.
 """
 import nltk
-import re
 
 
-PLACEHOLDER_RE = re.compile(r'^<[A-Za-z]+>$')
-
-
-def get_pos(treebank_tag):
+def generate_ngrams(tokens, n=2):
     """
-    Map NLTK TreeBank POS tags to WordNet POS tags.
+    Generate n-grams from a list of tokens.
 
     Args:
-        treebank_tag (str): NLTK TreeBank POS tag (e.g., 'VB', 'NN', 'JJ').
+        tokens (list): List of tokens to generate n-grams from.
+        n (int): Size of each n-gram. Defaults to 2 (bigrams).
 
     Returns:
-        str or None: WordNet POS tag (NOUN, VERB, ADJ, ADV) or None.
+        list: List of n-grams as strings, with tokens joined by "_".
+              Returns empty list if tokens is not a list or has fewer
+              than n elements.
     """
-    if treebank_tag.startswith('V'):
-        return nltk.corpus.wordnet.VERB
-    elif treebank_tag.startswith('J'):
-        return nltk.corpus.wordnet.ADJ
-    elif treebank_tag.startswith('R'):
-        return nltk.corpus.wordnet.ADV
-    elif treebank_tag.startswith('N'):
-        return nltk.corpus.wordnet.NOUN
-    else:
-        return None
+    # Return empty list if tokens is not a list
+    if not isinstance(tokens, list):
+        return []
 
+    # Return empty list if not enough tokens
+    if len(tokens) < n:
+        return []
 
-def normalize_tokens(tokens, method="lemmatize"):
-    """
-    Normalize tokens via lemmatization or stemming.
+    # Generate n-grams using nltk
+    ngrams = nltk.ngrams(tokens, n)
 
-    Args:
-        tokens (list): List of tokens to normalize.
-        method (str): Normalization method: "lemmatize" or "stem".
-                      Defaults to "lemmatize".
-
-    Returns:
-        list: Normalized tokens.
-
-    Raises:
-        ValueError: If method is not "lemmatize" or "stem".
-    """
-    # Validate method parameter
-    if method not in ("lemmatize", "stem"):
-        raise ValueError("method must be 'lemmatize' or 'stem'")
-
-    result = []
-
-    if method == "stem":
-        # Use PorterStemmer for stemming
-        stemmer = nltk.stem.PorterStemmer()
-        for token in tokens:
-            # Skip placeholders
-            if PLACEHOLDER_RE.match(token):
-                result.append(token)
-            else:
-                result.append(stemmer.stem(token))
-
-    elif method == "lemmatize":
-        # Use POS-aware lemmatization
-        lemmatizer = nltk.stem.WordNetLemmatizer()
-        # Tag tokens with their POS
-        tagged = nltk.pos_tag(tokens)
-
-        for token, pos_tag in tagged:
-            # Skip placeholders
-            if PLACEHOLDER_RE.match(token):
-                result.append(token)
-            else:
-                # Map POS tag to WordNet POS
-                wordnet_pos = get_pos(pos_tag)
-                # Lemmatize with POS (or without if POS is None)
-                if wordnet_pos:
-                    result.append(lemmatizer.lemmatize(token, pos=wordnet_pos))
-                else:
-                    result.append(lemmatizer.lemmatize(token))
+    # Convert each n-gram tuple to a string joined by "_"
+    result = ['_'.join(gram) for gram in ngrams]
 
     return result
