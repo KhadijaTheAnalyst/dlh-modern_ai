@@ -2,8 +2,7 @@
 """
 Text tokenization functions for SMS messages.
 """
-import nltk
-from nltk.tokenize import TweetTokenizer, word_tokenize
+import re
 
 
 EMOTICON_MAP = {
@@ -55,8 +54,8 @@ def tokenize_text(text, method="tweet"):
     Args:
         text (str): The cleaned SMS message to tokenize.
         method (str): Tokenization strategy:
-            - "tweet": NLTK TweetTokenizer (reduces repeated chars to 3)
-            - "word": NLTK word tokenization
+            - "tweet": Reduce repeated chars to 3, keep emoticons
+            - "word": Split on punctuation and whitespace
             - "split": Python whitespace split
             Default: "tweet"
 
@@ -72,13 +71,32 @@ def tokenize_text(text, method="tweet"):
 
     # Support different tokenization methods
     if method == "tweet":
-        # TweetTokenizer with reduce_len=True limits repeated chars to 3
-        tokenizer = TweetTokenizer(reduce_len=True)
-        return tokenizer.tokenize(text)
+        # Reduce repeated characters to max 3
+        text = re.sub(r'(.)\1{3,}', r'\1\1\1', text)
+
+        # Regex pattern for tweet tokenization
+        # Match: emoticons, placeholders, words/contractions, punctuation
+        pattern = r"(:[()dp|-]?|;[\)-]?|</?3|o:\)|b\)|" \
+                  r"<[^>]+>|" \
+                  r"\w+(?:'\w+)?|" \
+                  r"\.{2,}|[!?.])"
+        tokens = re.findall(pattern, text, re.IGNORECASE)
+        return tokens
 
     elif method == "word":
-        # NLTK word tokenization
-        return word_tokenize(text)
+        # Split contractions and punctuation
+        # First, add spaces around punctuation
+        text = re.sub(r'([^a-zA-Z0-9\s<>\'])', r' \1 ', text)
+        # Split contractions like "don't" → "do" + "n't"
+        tokens = []
+        for word in text.split():
+            if "'" in word:
+                parts = word.split("'")
+                tokens.append(parts[0])
+                tokens.append("'" + parts[1])
+            else:
+                tokens.append(word)
+        return [t for t in tokens if t]
 
     elif method == "split":
         # Python whitespace split
