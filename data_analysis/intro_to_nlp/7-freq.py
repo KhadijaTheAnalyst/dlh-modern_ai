@@ -36,6 +36,5 @@ def plot_top_n_frequencies(corpus_tokens, n=20):
     plt.xlabel("Word")
     plt.ylabel("Frequency")
     plt.tight_layout()
-    plt.show()
 
     return freq_dist
