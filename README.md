@@ -3,7 +3,6 @@
 A broad sweep through the modern AI stack, data analysis, classical machine learning, and deep learning, built as part of the AI Academy at Digital Learning Hub Luxembourg (Holberton School ML Engineering curriculum). Chose this track over Data Science specifically because it goes further into the engineering side: building things, not just analyzing them.
 
 ![Telco churn analysis output](visuals/churn_output.png)
-*(Replace this with a screenshot from Telco_Customer_Churn_Analysis.ipynb or one of the deep_learning notebooks. Export it as a PNG, commit it to a visuals/ folder, and update the path above.)*
 
 ---
 
