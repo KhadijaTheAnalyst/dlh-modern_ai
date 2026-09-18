@@ -1,7 +1,6 @@
-# Modern AI, ML Engineering Coursework
+# Modern AI: Data Science Coursework
 
-A broad sweep through the modern AI stack, data analysis, classical machine learning, and deep learning, built as part of the AI Academy at Digital Learning Hub Luxembourg (Holberton School ML Engineering curriculum). Chose this track over Data Science specifically because it goes further into the engineering side: building things, not just analyzing them.
-
+A broad sweep through the modern AI stack, data analysis, classical machine learning, and deep learning, built as part of the Data Science specialization at the AI Academy, Digital Learning Hub Luxembourg (Holberton School curriculum), covering CNNs, computer vision, and NLP alongside classical ML.
 ![Telco churn analysis output](visuals/churn_output.png)
 
 ---
@@ -42,5 +41,5 @@ Python, scikit-learn, Keras/TensorFlow, pandas, NumPy, NLP tooling
 
 ## About the Developer
 
-**Khadija**, Data Analyst based in Luxembourg, currently in the AI Academy at Digital Learning Hub Luxembourg, training as an ML Engineer.
+**Khadija**, Data Analyst based in Luxembourg, currently studying Data Science (deep learning, computer vision, and NLP) at Digital Learning Hub Luxembourg's AI Academy.
 [LinkedIn](https://www.linkedin.com/in/khadija-mustafa-98344527b/) · [Portfolio](https://khadijatheanalyst.github.io) · [GitHub](https://github.com/KhadijaTheAnalyst)
