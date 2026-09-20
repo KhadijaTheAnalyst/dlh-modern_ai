@@ -3,7 +3,6 @@
 Bag-of-Words feature matrix generation.
 """
 import sklearn
-from sklearn.feature_extraction.text import CountVectorizer
 
 
 def bag_of_words(corpus_tokens, max_features=5000, ngram_range=(1, 2),
@@ -17,8 +16,7 @@ def bag_of_words(corpus_tokens, max_features=5000, ngram_range=(1, 2),
                            Defaults to 5000.
         ngram_range (tuple): Range of n-grams (min_n, max_n).
                             Defaults to (1, 2).
-        min_df (int): Minimum document frequency.
-                     Defaults to 2.
+        min_df (int): Minimum document frequency. Defaults to 2.
         max_df (float): Maximum document frequency (as proportion).
                        Defaults to 0.95.
         binary (bool): If True, all non-zero counts are set to 1.
@@ -33,7 +31,7 @@ def bag_of_words(corpus_tokens, max_features=5000, ngram_range=(1, 2),
     corpus_text = [' '.join(tokens) for tokens in corpus_tokens]
 
     # Create the CountVectorizer
-    vectorizer = CountVectorizer(
+    vectorizer = sklearn.feature_extraction.text.CountVectorizer(
         max_features=max_features,
         ngram_range=ngram_range,
         min_df=min_df,
