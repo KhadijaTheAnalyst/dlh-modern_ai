@@ -93,7 +93,8 @@ def build_model(hp):
 
     Configuration 3:
         - num_layers=2, units=4, activation='relu', lr=1e-2
-        - Input(784) → Dense(4, relu) → Dense(4, relu) → Dense(10, softmax)
+        - Input(784) → Dense(4, relu) → Dense(4, relu)
+                                    → Dense(10, softmax)                
 
     Keras Tuner Integration:
     -------------------------
