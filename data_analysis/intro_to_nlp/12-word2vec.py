@@ -38,7 +38,7 @@ def word2vec_embeddings(corpus_tokens, vector_size=100, window=5,
         workers=workers
     )
 
-     # Create message embeddings as mean of token vectors
+    # Create message embeddings as mean of token vectors
     embeddings = []
     for tokens in corpus_tokens:
         # Get vectors for in-vocab tokens only
