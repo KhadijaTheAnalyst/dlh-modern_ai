@@ -103,14 +103,22 @@ def convert_to_yolo_format(obj, width, height, class_to_id):
     bbox_width = max(0, min(1, bbox_width))
     bbox_height = max(0, min(1, bbox_height))
 
-    return f"{class_id} {center_x:.6f} {center_y:.6f} {bbox_width:.6f} {bbox_height:.6f}"
+    return (
+        f"{class_id} {center_x:.6f} {center_y:.6f} "
+        f"{bbox_width:.6f} {bbox_height:.6f}"
+    )
 
 
 def main():
     """Main function to prepare the dataset."""
     # Define paths
-    voc_root = Path("C:/dlh-modern_ai/deep_learning/cv_apps/datasets/segmentation/VOCdevkit/VOC2012")
-    detection_root = Path("C:/dlh-modern_ai/deep_learning/cv_apps/datasets/detection")
+    voc_root = Path(
+        "C:/dlh-modern_ai/deep_learning/cv_apps/datasets/"
+        "segmentation/VOCdevkit/VOC2012"
+    )
+    detection_root = Path(
+        "C:/dlh-modern_ai/deep_learning/cv_apps/datasets/detection"
+    )
 
     # Verify VOC dataset exists
     if not voc_root.exists():
@@ -148,7 +156,10 @@ def main():
         with open(val_file) as f:
             val_images = {line.strip().split()[0] for line in f}
 
-    print(f"📈 Train images: {len(train_images)}, Val images: {len(val_images)}")
+    print(
+        f"📈 Train images: {len(train_images)}, "
+        f"Val images: {len(val_images)}"
+    )
 
     # Process annotations
     annotations_dir = voc_root / "Annotations"

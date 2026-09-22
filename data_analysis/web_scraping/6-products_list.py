@@ -8,8 +8,8 @@ def scrape_products(url):
     """Scrape all products on a webscraper.io-style category page.
 
     Args:
-        url (str): The product category page, e.g.
-            "https://webscraper.io/test-sites/e-commerce/static/computers/laptops".
+        url (str): The product category listing page, e.g. a
+            webscraper.io/test-sites category URL.
 
     Returns:
         list[dict]: One dict per product, each shaped like:
@@ -70,8 +70,8 @@ def scrape_products(url):
         product_cards = driver.find_elements("class name", "thumbnail")
 
         for card in product_cards:
-            # The product name lives on an <a class="title"> tag, e.g.
-            #   <a href="..." class="title" title="Packard 255 G2">Packard 255 G2</a>
+            # The product name lives in an <a class="title"> tag's
+            # "title" attribute, e.g. title="Packard 255 G2".
             # We read the "title" ATTRIBUTE (not the visible text), since
             # the visible text can sometimes get truncated with "..." for
             # long names, but the title attribute always holds the full name.

@@ -42,8 +42,9 @@ def tune_hyperparameters():
     print("PHASE 1: LIGHTWEIGHT HYPERPARAMETER TUNING")
     print("=" * 70)
     print("Testing 15-20 hyperparameter configurations...")
-    print("This phase explores optimal settings for learning rates, augmentation,")
-    print("and other training parameters using short 10-epoch trials.\n")
+    print("This phase explores optimal settings for learning rates,")
+    print("augmentation, and other training parameters using short")
+    print("10-epoch trials.\n")
 
     # Load base YOLO model
     model = YOLO("yolov8n.pt")
@@ -73,7 +74,10 @@ def tune_hyperparameters():
     print("=" * 70)
     print("PHASE 2: FINAL TRAINING TO CONVERGENCE")
     print("=" * 70)
-    print("Continuing training from best checkpoint with optimal hyperparameters...")
+    print(
+        "Continuing training from best checkpoint with optimal "
+        "hyperparameters..."
+    )
     print("Training for ~150 total epochs with early stopping.\n")
 
     # Load the best model from tuning phase
@@ -123,8 +127,14 @@ def tune_hyperparameters():
         recall = metrics.get('metrics/recall(B)', 0)
 
         print("Performance Metrics:")
-        print(f"  mAP50:     {map50:.4f} ({map50*100:.1f}%) - Target: ≥ 0.65 (65%)")
-        print(f"  mAP50-95:  {map50_95:.4f} ({map50_95*100:.1f}%) - Target: ≥ 0.46 (46%)")
+        print(
+            f"  mAP50:     {map50:.4f} ({map50*100:.1f}%) - "
+            "Target: ≥ 0.65 (65%)"
+        )
+        print(
+            f"  mAP50-95:  {map50_95:.4f} ({map50_95*100:.1f}%) - "
+            "Target: ≥ 0.46 (46%)"
+        )
         print(f"  Precision: {precision:.4f}")
         print(f"  Recall:    {recall:.4f}\n")
 
