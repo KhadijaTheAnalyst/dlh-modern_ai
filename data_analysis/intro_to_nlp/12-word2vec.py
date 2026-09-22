@@ -38,7 +38,7 @@ def word2vec_embeddings(corpus_tokens, vector_size=100, window=5,
         workers=workers
     )
 
-    # Create message embeddings as mean of token vectors
+     # Create message embeddings as mean of token vectors
     embeddings = []
     for tokens in corpus_tokens:
         # Get vectors for in-vocab tokens only
@@ -52,7 +52,7 @@ def word2vec_embeddings(corpus_tokens, vector_size=100, window=5,
 
         embeddings.append(embedding)
 
-    # Convert to numpy array
-    X = np.array(embeddings)
+    # Convert to numpy array with float64 dtype
+    X = np.array(embeddings, dtype=np.float64)
 
     return X, model
