@@ -2,7 +2,6 @@
 """
 Locate <mask> token positions in tokenized input.
 """
-import transformers
 
 
 def get_mask_index(inputs, tokenizer):
