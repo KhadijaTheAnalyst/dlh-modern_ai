@@ -53,6 +53,6 @@ def fasttext_embeddings(corpus_tokens, vector_size=100, window=5,
         embeddings.append(embedding)
 
     # Convert to numpy array
-    X = np.array(embeddings)
+    X = np.array(embeddings, dtype=np.float64)
 
     return X, model
