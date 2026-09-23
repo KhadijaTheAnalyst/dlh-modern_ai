@@ -28,6 +28,10 @@ def decode_mask_predictions(mask_logits_list, tokenizer):
         vocab_size = logits.shape[0]
         vocab_ids = list(range(vocab_size))
         tokens = tokenizer.convert_ids_to_tokens(vocab_ids)
-        decoded_tokens.append(tokens)
+        readable_tokens = [
+            tokenizer.convert_tokens_to_string([token]).strip()
+            for token in tokens
+        ]
+        decoded_tokens.append(readable_tokens)
 
     return decoded_tokens
