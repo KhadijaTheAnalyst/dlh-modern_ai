@@ -3,7 +3,7 @@
 Generate image captions using a pre-trained BLIP Vision-Language Model.
 """
 import transformers
-from PIL import Image
+import PIL
 
 
 def image_captioner(model, image_path, max_new_tokens):
@@ -25,7 +25,7 @@ def image_captioner(model, image_path, max_new_tokens):
         model
     )
 
-    image = Image.open(image_path).convert("RGB")
+    image = PIL.Image.open(image_path).convert("RGB")
     inputs = processor(images=image, return_tensors="pt")
 
     generated_ids = blip_model.generate(
