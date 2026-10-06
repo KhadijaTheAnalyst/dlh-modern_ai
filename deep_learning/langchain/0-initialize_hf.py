@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module that initializes a Hugging Face LLM for use in LangChain."""
-from langchain_huggingface import HuggingFacePipeline
+from langchain_community import llms
 
 
 def initialize_hf_llm(model_name, max_tokens):
@@ -13,9 +13,10 @@ def initialize_hf_llm(model_name, max_tokens):
     Returns:
         llm: An instance of HuggingFacePipeline.
     """
-    llm = HuggingFacePipeline.from_model_id(
+    llm = llms.HuggingFacePipeline.from_model_id(
         model_id=model_name,
         task="text2text-generation",
+        model_kwargs={"dtype": "auto"},
         pipeline_kwargs={"max_new_tokens": max_tokens},
     )
     return llm
