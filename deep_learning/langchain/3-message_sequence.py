@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module that builds a sequence of chat messages for a LangChain LLM."""
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core import messages
 
 
 def setup_message_sequence(system_msg, human_msgs):
@@ -13,7 +13,7 @@ def setup_message_sequence(system_msg, human_msgs):
     Returns:
         A list containing the SystemMessage followed by HumanMessage objects.
     """
-    messages = [SystemMessage(content=system_msg)]
+    sequence = [messages.SystemMessage(content=system_msg)]
     for msg in human_msgs:
-        messages.append(HumanMessage(content=msg))
-    return messages
+        sequence.append(messages.HumanMessage(content=msg))
+    return sequence
