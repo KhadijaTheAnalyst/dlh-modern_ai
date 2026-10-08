@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Module that creates a Pandas DataFrame agent using a LangChain LLM."""
-import langchain_experimental.agents
+from langchain_experimental.agents.agent_toolkits import (
+    create_pandas_dataframe_agent
+)               # noqa: E501
 
 
 def create_dataframe_agent(llm, df):
@@ -13,7 +15,7 @@ def create_dataframe_agent(llm, df):
     Returns:
         A Pandas DataFrame agent that can process queries on the DataFrame.
     """
-    agent = langchain_experimental.agents.create_pandas_dataframe_agent(
+    agent = create_pandas_dataframe_agent(
         llm,
         df,
         verbose=True,
