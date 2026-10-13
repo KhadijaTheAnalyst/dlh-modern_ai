@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module that adds session-aware chat history to a retrieval chain."""
-from langchain_core.runnables import history
+from langchain_core import runnables
 
 
 def create_session_aware_chat(retrieval_chain, get_session_history,
@@ -19,7 +19,7 @@ def create_session_aware_chat(retrieval_chain, get_session_history,
     Returns:
         A RunnableWithMessageHistory.
     """
-    session_chain = history.RunnableWithMessageHistory(
+    session_chain = runnables.RunnableWithMessageHistory(
         retrieval_chain,
         get_session_history,
         input_messages_key=input_key,
