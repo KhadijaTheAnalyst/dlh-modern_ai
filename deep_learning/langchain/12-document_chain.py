@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Module that builds a document chain to answer questions from documents."""
-from langchain import prompts
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core import prompts
+from langchain.chains import combine_documents
 
 
 def document_answer_chain(llm, system_message, human_message):
@@ -24,5 +24,5 @@ def document_answer_chain(llm, system_message, human_message):
         prompts.MessagesPlaceholder(variable_name="chat_history"),
         ("human", human_message),
     ])
-    chain = create_stuff_documents_chain(llm, prompt)
+    chain = combine_documents.create_stuff_documents_chain(llm, prompt)
     return prompt, chain
